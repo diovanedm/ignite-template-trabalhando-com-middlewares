@@ -11,10 +11,22 @@ const users = [];
 
 function checksExistsUserAccount(request, response, next) {
   // Complete aqui
+  const { username } = request.header;
+  const user = users.find(user => user.username === username)
+
+  request.user = user;
+  return next();
 }
 
 function checksCreateTodosUserAvailability(request, response, next) {
   // Complete aqui
+  const { user } = request;
+
+  if ((user.todos < 10 && !user.pro) || user.pro) {
+    return next()
+  } else {
+    return response.json(403)
+  }
 }
 
 function checksTodoExists(request, response, next) {
